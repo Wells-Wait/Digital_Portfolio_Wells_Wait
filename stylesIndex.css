@@ -1,0 +1,37 @@
+*{
+    padding: 0%;
+    margin: 0;
+    text-decoration: none;
+    
+}
+/* top baner thing */
+#TopHeader{
+    background-color: black;
+    color: white;
+    padding-left: 15px;
+    text-align: center;
+    height: 80px;
+
+}
+
+
+/* navigation aria */
+* #TopicList ul li{
+    margin: 8px;
+    background-color: rgb(195, 195, 195);
+    border: 2px solid black;
+    text-align: center;
+    height:40px;
+    
+}
+* #TopicList ul li a{
+    color: black;
+}
+* #TopicList ul li:hover{
+    margin: 8px;
+    background-color: rgb(180, 200, 255);
+    border: 5px solid black;
+    text-align: center;
+    height:45px;
+    
+}
