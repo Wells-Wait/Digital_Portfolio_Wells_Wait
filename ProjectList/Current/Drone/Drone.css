@@ -17,11 +17,7 @@
 #TopHeader a h1,h2{
     color: white;
 }
-#TopHeader a:hover h1{
-    color: rgb(180, 200, 255);
-    
-}
-#TopHeader a:hover h2{
+#TopHeader a:hover *{
     color: rgb(180, 200, 255);
     
 }
