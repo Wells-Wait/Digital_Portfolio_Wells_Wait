@@ -44,11 +44,12 @@
     float: left;
     background-color: black;
 
-    padding: 0px 2%;
+    padding: 0px 1%;
     font-size: 10pt;
     height: 15px;
     transition: 0.3s;
 }
+
 #navbar:hover{
     height: 20px;
     
@@ -58,7 +59,6 @@
 
     background-color: black;
 
-    padding: 0px 2%;
     font-size: 13pt;
     height: 20px;
   
