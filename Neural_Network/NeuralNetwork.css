@@ -75,3 +75,26 @@
 
 }
 
+/* bodey */
+
+section div{
+    justify-self: center;
+
+display: table;
+ border-color: black;
+ border-style: groove;
+ width: 90%;
+}
+section div *{
+float: left;
+
+ padding: 10px;
+ width: 45%;
+ text-align: center;
+ 
+}
+section div object{
+
+    width: 45%;
+    height: 1000px;
+}

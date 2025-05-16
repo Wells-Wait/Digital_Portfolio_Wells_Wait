@@ -74,3 +74,31 @@
 
 
 }
+/* body */
+section{
+    border-radius: 50px;
+ border-color: black;
+ border-style: groove;
+ display: table;
+    margin: 15px;
+    padding: 5px;
+    width: 90%;
+    justify-self: center;
+}
+section img{
+float: left;   
+ width: 35%;
+ border-radius: 50px;
+ border-color: black;
+ border-style: groove;
+ 
+}
+section #text1{
+    text-align: center;
+}
+section #text1 h1{
+    font-size: xx-large;
+}
+section #text1 p{
+    font-size: x-large;
+}
