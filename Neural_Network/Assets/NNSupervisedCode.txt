@@ -1,0 +1,532 @@
+
+import numpy as np
+
+class AI:
+    def __init__(self,structure,error_type):
+        self.layers=structure
+        self.error_type=error_type
+    def run_AI(self,data_point):#one point
+        for i in range(0,len(self.layers)):
+            data_point=self.layers[i].run_layer(data_point)
+        return data_point
+    def train_AI(self,x,y):
+
+        number_points=len(x)
+        Avrige_Layer_Loss=0
+        outputsPy=[]
+        outputsTy=[]
+        #for each data point
+        for point in range(0,number_points):
+           
+            #run+save data point
+            layer_output=[]
+            data_point=x[point]
+            for i in range(0,len(self.layers)):
+                layer_output.append(data_point)
+                data_point=self.layers[i].run_layer(data_point)
+            layer_output.append(data_point)
+            outputsPy.append(data_point)
+            outputsTy.append(y[point])
+            layer_loss=lossP(y[point],layer_output[-1],self.error_type)
+ 
+            Avrige_Layer_Loss+=(y[point]-layer_output[-1])**2 /number_points
+            #back propogate
+            for i in range(0,len(self.layers)):
+                layer=(len(self.layers)-1)-i
+                #print("\033[31maverage MSE:",Avrige_Layer_Loss.mean()*100,"%\n\033[35mData point:", point,"\n\033[36mLayer:", layer,"\n\033[32mLayer loss average:", layer_loss.mean())
+                layer_loss=self.layers[layer].train_layer(layer_loss,layer_output[layer],number_points,point)
+               
+
+        return Avrige_Layer_Loss, outputsTy, outputsPy
+   
+class BasicNN:
+    def __init__(self,inputs_count,nerons_count,activation,training_rate=1):
+        self.inputs_count=inputs_count
+        self.nerons_count=nerons_count
+        self.af=activation
+        self.training_rate=training_rate
+        self.weights=np.random.rand(nerons_count,inputs_count)-.5#input shape = inputes,1
+        self.biases=np.random.rand(nerons_count)-.5
+
+    def run_layer(self,data_point):
+        return AF(np.matmul(self.weights,data_point)+self.biases,self.af)
+    def train_layer(self,layer_loss,Previus_layer_out,number_points,point_number):
+        #prep
+        if point_number==0:
+            self.weights_T=np.zeros((self.nerons_count,self.inputs_count))#input shape = inputes,1
+            self.biases_T=np.zeros(self.nerons_count)
+       
+        new_layer_loss=np.zeros(self.inputs_count)
+       
+       
+       
+        z=np.matmul(self.weights,Previus_layer_out)+self.biases
+        dc_dp=np.diag(layer_loss)
+        dc_dz=np.matmul(dc_dp,AFP(z, self.af))
+        dz_dw=np.zeros((self.nerons_count, self.inputs_count))
+        dz_dw[:]=Previus_layer_out
+        dz_dx=self.weights
+       
+        dc_dw=np.matmul(dc_dz,dz_dw)
+        dc_db=dc_dz
+        dc_dx=np.matmul(dc_dz,dz_dx)
+       
+
+        self.weights_T+=(dc_dw)/number_points
+        self.biases_T+=(np.sum(dc_db, axis = 0))/(number_points)
+        new_layer_loss+=np.sum(dc_dx, axis = 0)
+        #commit
+        if point_number==number_points-1:
+            self.weights-=self.weights_T*self.training_rate
+            self.biases-=self.biases_T*self.training_rate
+        return new_layer_loss
+               
+
+class Flaten2D:
+    def __init__(self,shape):
+        self.x=shape[0]
+        self.y=shape[1]
+    def run_layer(self,data_point):
+
+        out=np.zeros(self.x*self.y)
+        i=0
+        for x in range(0,self.x):
+            for y in range(0,self.y):
+                out[i]=data_point[x,y]
+                i+=1
+
+        return out
+    def train_layer(self,layer_loss,Previus_layer_out,number_points,point_number):
+        out=np.zeros((self.x,self.y))
+        i=0
+        for x in range(0,self.x):
+            for y in range(0,self.y):
+                out[x,y]=layer_loss[i]
+                i+=1
+
+        return out
+
+class BasicCNN:
+    def __init__(self,input_shape,kernel_shape,activation,training_rate=1):
+        self.input_x=input_shape[0]
+        self.input_y=input_shape[1]
+       
+        self.kernel_x=kernel_shape[0]
+        self.kernel_y=kernel_shape[1]
+       
+        self.af=activation
+       
+        self.training_rate=training_rate
+       
+        self.weights=np.random.rand(self.kernel_x*self.kernel_y)-.5#input shape = inputes,1
+        self.biases=np.random.rand(1)-.5
+       
+       
+        self.averige_Training_Loss_out=np.zeros(input_shape)
+        for out_x in range(0,self.input_x-self.kernel_x+1):
+            for out_y in range(0,self.input_y-self.kernel_y+1):
+                for xi in range(out_x,out_x+self.kernel_x):
+                    for yi in range(out_y,out_y+self.kernel_y):
+                        self.averige_Training_Loss_out[xi,yi]+=1
+
+    def run_layer(self,data_point):
+
+        out=np.zeros((self.input_x-self.kernel_x+1,self.input_y-self.kernel_y+1))
+        for x in range(0,self.input_x-self.kernel_x+1):
+            for y in range(0,self.input_y-self.kernel_y+1):
+                kernal=data_point[x:x+self.kernel_x,y:y+self.kernel_y]
+
+                i=0
+                for j in range(0,self.kernel_x):
+                    for k in range(0,self.kernel_y):
+                        out[x,y]+=kernal[j,k]*self.weights[i]
+                        i+=1
+                out[x,y]=AF(out[x,y]+self.biases,self.af)
+               
+     
+        return out
+       
+
+    def train_layer(self,layer_loss,Previus_layer_out,number_points,point_number):
+        #prep
+        if point_number==0:
+            self.weights_T=np.zeros((self.kernel_x*self.kernel_y))#input shape = inputes,1
+            self.biases_T=np.zeros(1)
+           
+        new_layer_loss=np.zeros((self.input_x,self.input_y))
+       
+        g=-1
+        for out_x in range(0,self.input_x-self.kernel_x+1):
+            for out_y in range(0,self.input_y-self.kernel_y+1):
+                i=0
+                g+=1
+                z=np.matmul(self.weights,Previus_layer_out[out_x:out_x+self.kernel_x,out_y:out_y+self.kernel_y].reshape(self.kernel_y*self.kernel_x,))+self.biases
+                dc_dz=np.matmul(layer_loss.reshape((self.input_x-self.kernel_x+1)*(self.input_y-self.kernel_y+1),1),AFP(z, self.af))
+                for xi in range(out_x,out_x+self.kernel_x):
+                    for yi in range(out_y,out_y+self.kernel_y):
+
+                        dz_dw=Previus_layer_out[xi,yi]
+                        dz_db=1
+                        dz_dx=self.weights[i]
+                        self.weights_T[i]+=(dc_dz[g]*dz_dw)/(number_points*(self.input_x-self.kernel_x+1)*(self.input_y-self.kernel_y+1)  )                      
+                        self.biases_T[0]+=(dc_dz[g]*dz_db)/(number_points*(self.input_x-self.kernel_x+1)*(self.input_y-self.kernel_y+1))
+                        new_layer_loss[xi,yi]+=(dc_dz[g]*dz_dx)/(self.averige_Training_Loss_out[xi,yi])
+                        i+=1
+                       
+        #commit
+        if point_number==number_points-1:
+            self.weights-=self.weights_T*self.training_rate
+            self.biases-=self.biases_T*self.training_rate
+        return new_layer_loss
+               
+class ExponentialCNN:
+    def __init__(self,input_shape,kernel_shape,activation,training_rate=1):
+
+        self.input_x=input_shape[0]
+        self.input_y=input_shape[1]
+       
+        self.kernel_x=kernel_shape[0]
+        self.kernel_y=kernel_shape[1]
+       
+        self.af=activation
+       
+        self.training_rate=training_rate
+       
+        self.weights=np.random.rand(self.kernel_x*self.kernel_y)-.5#input shape = inputes,1
+        self.exponent_weights=(np.random.rand(self.kernel_x*self.kernel_y)-.0001)*2
+        self.biases=np.random.rand(1)-.5
+       
+       
+        self.averige_Training_Loss_out=np.zeros(input_shape)
+        for out_x in range(0,self.input_x-self.kernel_x+1):
+            for out_y in range(0,self.input_y-self.kernel_y+1):
+                for xi in range(out_x,out_x+self.kernel_x):
+                    for yi in range(out_y,out_y+self.kernel_y):
+                        self.averige_Training_Loss_out[xi,yi]+=1
+
+    def run_layer(self,data_point):
+
+        out=np.zeros((self.input_x-self.kernel_x+1,self.input_y-self.kernel_y+1))
+        for x in range(0,self.input_x-self.kernel_x+1):
+            for y in range(0,self.input_y-self.kernel_y+1):
+                kernal=data_point[x:x+self.kernel_x,y:y+self.kernel_y]
+
+                i=0
+                for j in range(0,self.kernel_x):
+                    for k in range(0,self.kernel_y):
+                        out[x,y]+=self.weights[i]*(kernal[j,k]**self.exponent_weights[i])
+                        i+=1
+                out[x,y]=AF(out[x,y]+self.biases,self.af)
+               
+     
+        return out
+       
+       
+
+    def train_layer(self,layer_loss,Previus_layer_out,number_points,point_number):
+        #prep
+        if point_number==0:
+            self.weights_T=np.zeros((self.kernel_x*self.kernel_y))#input shape = inputes,1
+            self.biases_T=np.zeros(1)
+            self.exponent_weights_T=np.zeros((self.kernel_x*self.kernel_y))
+           
+        new_layer_loss=np.zeros((self.input_x,self.input_y))
+       
+        g=-1
+        for out_x in range(0,self.input_x-self.kernel_x+1):
+            for out_y in range(0,self.input_y-self.kernel_y+1):
+                i=0
+                g+=1
+                z=np.matmul(self.weights,Previus_layer_out[out_x:out_x+self.kernel_x,out_y:out_y+self.kernel_y].reshape(self.kernel_y*self.kernel_x,))+self.biases
+                dc_dz=np.matmul(layer_loss.reshape((self.input_x-self.kernel_x+1)*(self.input_y-self.kernel_y+1),1),AFP(z, self.af))
+                for xi in range(out_x,out_x+self.kernel_x):
+                    for yi in range(out_y,out_y+self.kernel_y):
+
+                        dz_dw=Previus_layer_out[xi,yi]**self.exponent_weights[i]
+                        dz_db=1
+                        dz_dx=self.weights[i]*self.exponent_weights[i]*(Previus_layer_out[xi,yi]**(self.exponent_weights[i]-1))
+                        dz_dexw=self.weights[i]*np.log(self.exponent_weights[i])*(Previus_layer_out[xi,yi]**self.exponent_weights[i])
+                        self.weights_T[i]+=(dc_dz[g]*dz_dw)/(number_points*(self.input_x-self.kernel_x+1)*(self.input_y-self.kernel_y+1)  )                      
+                        self.exponent_weights_T[i]+=(dc_dz[g]*dz_dexw)/(number_points*(self.input_x-self.kernel_x+1)*(self.input_y-self.kernel_y+1)  )      
+                        self.biases_T[0]+=(dc_dz[g]*dz_db)/(number_points*(self.input_x-self.kernel_x+1)*(self.input_y-self.kernel_y+1))
+                        new_layer_loss[xi,yi]+=(dc_dz[g]*dz_dx)/(self.averige_Training_Loss_out[xi,yi])
+                        i+=1
+                       
+        #commit
+        if point_number==number_points-1:
+            self.weights-=self.weights_T*self.training_rate
+            self.biases-=self.biases_T*self.training_rate
+            self.exponent_weights-=self.exponent_weights_T*self.training_rate
+        return new_layer_loss
+class SumLastNN:
+    def __init__(self,inputs_count,nerons_count,activation,training_rate=1):
+        self.inputs_count=inputs_count
+        self.nerons_count=nerons_count
+        self.af=activation
+        self.training_rate=training_rate
+        self.weights=np.random.rand(nerons_count,inputs_count)+2#this should be tested
+        self.biases=np.random.rand(nerons_count,inputs_count)-.5
+
+    def run_layer(self,data_point):
+        out=np.zeros(self.nerons_count)
+        for i in range(self.nerons_count):
+            out[i]=np.matmul(self.weights[i],AF(data_point+self.biases[i],self.af))
+       
+       
+        return out
+    def train_layer(self,layer_loss,Previus_layer_out,number_points,point_number):
+        #prep
+        if point_number==0:
+            self.weights_T=np.zeros((self.nerons_count,self.inputs_count))#input shape = inputes,1
+            self.biases_T=np.zeros((self.nerons_count,self.inputs_count))
+       
+        new_layer_loss=np.zeros(self.inputs_count)
+       
+       
+        for N in range(0,self.nerons_count):
+            for I in range(0,self.inputs_count):
+                z=np.array([Previus_layer_out[I]+self.biases[N,I]])
+                dc_dz=layer_loss[N]*self.weights[N,I]*AFP(z, self.af)
+                dz_dw=layer_loss[N]*AF(z,self.af)
+                dz_db=1
+                dz_dx=1
+                self.weights_T[N,I]+=(dc_dz*dz_dw)/number_points
+                self.biases_T[N,I]+=(dc_dz*dz_db)/(number_points)
+                new_layer_loss[I]+=(dc_dz*dz_dx)
+        #commit
+        if point_number==number_points-1:
+            self.weights-=self.weights_T*self.training_rate
+            self.biases-=self.biases_T*self.training_rate
+        return new_layer_loss
+class WNN:
+    def __init__(self,inputs_count,nerons_count,activation,training_rate=1):
+        self.inputs_count=inputs_count
+        self.nerons_count=nerons_count
+        self.af=activation
+        self.training_rate=training_rate
+        self.weights=np.random.rand(nerons_count,inputs_count)-.5#input shape = inputes,1
+        self.biases=np.random.rand(nerons_count,inputs_count)-.5
+
+    def run_layer(self,data_point):
+        out = np.zeros(self.nerons_count)
+        for N in range(0,self.nerons_count):
+            for I in range(0,self.inputs_count):
+                out[N]+=AF(self.weights[N,I]*data_point[I]+self.biases[N,I],self.af)
+        return out
+    def train_layer(self,layer_loss,Previus_layer_out,number_points,point_number):
+        #prep
+        if point_number==0:
+            self.weights_T=np.zeros((self.nerons_count,self.inputs_count))#input shape = inputes,1
+            self.biases_T=np.zeros((self.nerons_count,self.inputs_count))  
+        new_layer_loss=np.zeros(self.inputs_count)
+       
+        for N in range(0,self.nerons_count):
+            z=self.weights[N]*Previus_layer_out+self.biases[N]
+            dc_dz=np.matmul(layer_loss[N]*np.ones(self.inputs_count),AFP(z, self.af))
+            dz_dw=np.diag(Previus_layer_out)
+            dz_dx=np.diag(self.weights[N])
+            dz_db=np.ones(self.inputs_count)
+           
+            self.weights_T[N]=(np.matmul(dc_dz,dz_dw))/number_points
+            self.biases_T[N]=(np.matmul(dc_dz,dz_db))/(number_points)
+            new_layer_loss+=(np.matmul(dc_dz,dz_dx))
+        #commit
+        if point_number==number_points-1:
+            self.weights-=self.weights_T*self.training_rate
+            self.biases-=self.biases_T*self.training_rate
+        return new_layer_loss
+   
+class SumLastCNN:
+    def __init__(self,input_shape,kernel_shape,activation,training_rate=1):
+
+        self.input_x=input_shape[0]
+        self.input_y=input_shape[1]
+       
+        self.kernel_x=kernel_shape[0]
+        self.kernel_y=kernel_shape[1]
+        self.af=activation
+        self.training_rate=training_rate
+        self.weights=np.random.rand(self.kernel_x*self.kernel_y)-.5#this should be tested
+        self.biases=np.random.rand(self.kernel_x*self.kernel_y)-.5
+
+    def run_layer(self,data_point):
+        out=np.zeros((self.input_x-self.kernel_x+1,self.input_y-self.kernel_y+1))
+        for x in range(0,self.input_x-self.kernel_x+1):
+            for y in range(0,self.input_y-self.kernel_y+1):
+                kernal=data_point[x:x+self.kernel_x,y:y+self.kernel_y]
+                k_data_point=np.reshape(kernal, (self.kernel_x*self.kernel_y,))        
+                out[x,y]=np.matmul(self.weights,AF(k_data_point+self.biases,self.af))
+        return out
+    def train_layer(self,layer_loss,Previus_layer_out,number_points,point_number):
+        #prep
+        if point_number==0:
+            self.weights_T=np.zeros(self.kernel_x*self.kernel_y)#input shape = inputes,1
+            self.biases_T=np.zeros(self.kernel_x*self.kernel_y)
+       
+        new_layer_loss=np.zeros((self.input_x,self.input_y))
+       
+        for x in range(0,self.input_x-self.kernel_x+1):
+            for y in range(0,self.input_y-self.kernel_y+1):
+                kernal=Previus_layer_out[x:x+self.kernel_x,y:y+self.kernel_y]
+                k_data_point=np.reshape(kernal, (self.kernel_x*self.kernel_y,))
+               
+                z=k_data_point+self.biases
+                dc_dp=layer_loss[x,y]*self.weights
+                dc_dw=layer_loss[x,y]*AF(z, self.af)
+                dc_dz=np.matmul(dc_dp,AFP(z, self.af))
+                dc_dxb=np.matmul(dc_dz,np.identity(self.kernel_x*self.kernel_y))#mathmaticly equivelent
+
+                self.weights_T+=(dc_dw)/(number_points*((self.input_x-self.kernel_x+1)*(self.input_y-self.kernel_y+1)))
+                self.biases_T+=(dc_dxb)/(number_points*((self.input_x-self.kernel_x+1)*(self.input_y-self.kernel_y+1)))
+                new_layer_loss[x:x+self.kernel_x,y:y+self.kernel_y]+=(np.reshape(dc_dxb, (self.kernel_x,self.kernel_y)))/((self.input_x-self.kernel_x+1)*(self.input_y-self.kernel_y+1))
+        #commit
+        if point_number==number_points-1:
+            self.weights-=self.weights_T*self.training_rate
+            self.biases-=self.biases_T*self.training_rate
+        return new_layer_loss
+   
+class Vis:
+    def __init__(self,inputs_count,output_count,updateOutRange=False,training_rate=1):
+        self.inputs_count=inputs_count
+        self.output_count=output_count
+        self.training_rate=training_rate
+        self.updateOutRange=updateOutRange
+        self.weights=np.random.rand(inputs_count)-.5
+        self.biases=np.random.rand(inputs_count)-.5
+       
+        kapta=np.linspace(0, np.pi*2,output_count+1)
+        self.T0=kapta[:-1]
+        self.T1=kapta[1:]
+       
+
+    def run_layer(self,data_point):
+        a=np.zeros(self.output_count)
+        for i in range(self.output_count):
+            t0=self.T0[i]
+            t1=self.T1[i]
+            a[i]=np.sum((np.cos(self.weights*(data_point+self.biases)*t0)-np.cos(self.weights*(data_point+self.biases)*t1))/(self.weights*(data_point+self.biases)))
+        return a
+    def train_layer(self,layer_loss,Previus_layer_out,number_points,point_number):
+        #prep
+        if point_number==0:
+            self.weights_T=np.zeros(self.inputs_count)#input shape = inputes,1
+            self.biases_T=np.zeros(self.inputs_count)
+            self.T0_T=np.zeros(self.output_count)
+            self.T1_T=np.zeros(self.output_count)
+       
+        new_layer_loss=np.zeros(self.inputs_count)
+        for i in range(self.inputs_count):
+            A=Previus_layer_out[i]+self.biases[i]
+            wi=self.weights[i]
+            dP_dw=0
+            dP_dx=0
+            dP_db=0
+            for k in range(self.output_count):
+                t0=self.T0[k]
+                t1=self.T1[k]
+                dP_dw=0*(wi*A*(np.sin(wi*A*t1)*t1-np.sin(wi*A*t0)*t0)-np.cos(wi*A*t0)+np.cos(wi*A*t1))/(wi**2 * A)
+                dP_dx=((wi**2)*A*(np.sin(wi*A*t1)*t1-np.sin(wi*A*t0)*t0)-wi*(np.cos(wi*A*t0)-np.cos(wi*A*t1)))/(wi*A)**2
+                dP_db=dP_dx
+                self.weights_T[i]+=layer_loss[k]*dP_dw/number_points
+                self.biases_T[i]+=layer_loss[k]*dP_db/number_points
+               
+                self.T0_T[k]+=-np.sin(wi*A*t0)/number_points
+                self.T1_T[k]+=np.sin(wi*A*t1)/number_points
+               
+                new_layer_loss[i]+=layer_loss[k]*dP_dx
+           
+
+        if point_number==number_points-1:
+            self.weights-=self.weights_T*self.training_rate
+            self.biases-=self.biases_T*self.training_rate
+            if self.updateOutRange==True:
+                self.T0-=self.T0_T*self.training_rate
+                self.T1-=self.T1_T*self.training_rate
+        return new_layer_loss
+
+               
+def AF(array,af):
+
+    if af== "sigmoid":
+        return 1/(1 + np.e ** (-array))
+    if af== "gaussian":
+        return np.e**(-(array)**2 / 2)
+    if af== "ReLU":
+        return np.where(array<0,array*0,array)
+    if af== "linear":
+        return array
+    if af== "softmax":
+        a=np.sum(np.e**array)
+        return (np.e**array)/a
+    if af=="gaussian variant":
+        return np.where(array<0,-np.e**(-array**4),np.e**(-array**4))#amplify might help
+    else:
+        print("bad activation function")
+def AFP(array,af):
+
+    if af== "sigmoid":
+        a=np.e**(-array)
+        k= np.zeros((len(array),len(array)))
+        for i in range(0,len(array)):
+            for t in range(0,len(array)):
+                if i==t:
+                    k[i,t]=a[i]/(1 + a[i])**2
+        return k
+    if  af== "gaussian":
+        k= np.zeros((len(array),len(array)))
+        for i in range(0,len(array)):
+            for t in range(0,len(array)):
+                if i==t:
+                    k[i,t]=-array[i]*np.e**(-(array[i])**2 / 2)
+        return k
+    if  af== "ReLU":
+        k= np.zeros((len(array),len(array)))
+        for i in range(0,len(array)):
+            for t in range(0,len(array)):
+                if i==t:
+                    if array[i]<0:
+                        k[i,t]=0
+                    else:
+                        k[i,t]=1
+                           
+        return k
+    if  af== "linear":
+        k= np.zeros((len(array),len(array)))
+        for i in range(0,len(array)):
+            for t in range(0,len(array)):
+                if i==t:
+                    k[i,t]=1
+           
+        return k
+    if  af== "softmax":
+        a = AF(array,"softmax")
+        k= np.zeros((len(array),len(array)))
+        for i in range(0,len(array)):
+            for t in range(0,len(array)):
+                if i!=t:
+                    k[i,t]=-a[t]*a[i]
+                else:
+                    k[i,t]=a[i]*(1-a[i])
+        return k
+    if af=="gaussian variant":
+       
+        return np.diag(np.where(array==0,array*0,np.abs((array**3)*np.e**(-array**4))))
+    else:
+        print("bad activation function")
+def lossP(true,pred,error):
+
+    if error== "MSE":
+        return -2*(true-pred)
+    if error== "MAE":
+        for i in range(0, len(true)):
+            if pred[i]>true[i]:
+                pred[i]=1
+            elif pred[i]==true[i]:
+                pred[i]=0
+            else:
+                pred[i]=-1
+            return pred
+    if error== "Cross-Entropy":              
+        return pred-true
+    else:
+        print("bad error function")

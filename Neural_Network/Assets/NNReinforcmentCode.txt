@@ -1,0 +1,140 @@
+import numpy as np
+import random
+grid=np.zeros((3,3))
+
+AIx=0
+AIy=0
+Foodx=2
+Foody=2
+grid[AIx,AIy]=1
+grid[Foodx,Foody]=-1
+
+def updateAI(x,y):
+    global AIx, AIy
+    grid[AIx,AIy]=0
+    AIx+=x
+    AIy+=y
+    while AIx<0:
+        AIx+=3
+    while AIy<0:
+        AIy+=3
+    while AIx>2:
+        AIx-=3
+    while AIy>2:
+        AIy-=3
+    grid[AIx,AIy]=1
+def updateFood(x,y):
+    global Foodx, Foody
+    grid[Foodx,Foody]=0
+    Foodx+=x
+    Foody+=y
+    grid[Foodx,Foody]=-1
+
+
+def reword():
+    global AIx, AIy, Foodx, y,Foodx,Foody
+    return (4-(abs(AIx-Foodx)+abs(AIy-Foody)))*1
+
+def activation(x):
+    return 1/(1+np.e**(-x))
+Input=grid.reshape(9)
+weight=(np.random.random((4,9))-.5)/2
+bias=(np.random.random((4))-.5)/2
+#%%
+
+class runinstance:
+    def __init__(self,move,praba,Input,out):
+        self.Move=move
+        self.Praba=praba#should already be scaler version of a product of a list
+        self.Input=Input
+        self.Out=out#not importtaint as this is last layer and not needed in training
+    def finalcombination(self,rewordaverage):
+        self.loss=np.zeros(4)
+        self.loss[self.Move]=1
+        self.loss*=self.Praba*rewordaverage
+        return self.loss
+instances=[]
+rewords=[]
+proba=[]
+def runmodel():
+    global instances,rewords, proba, grid
+    gridstate=grid.reshape(9)
+    out=activation(weight@gridstate+bias)
+    output_select=random.choices([0,1,2,3], weights=out)[0]
+    #print(bias)
+    instances.append(runinstance(output_select, np.prod(proba),gridstate,out))
+    proba.append(out[output_select])#note this is after building instance to avoid adding this praba
+    #move
+    updateAI([1,-1,0,0][output_select], [0,0,1,-1][output_select])
+    rewords.append(reword()-.3*len(proba))
+    
+        
+    
+#%%
+weight_t=np.zeros((4,9))
+bias_t=np.zeros(4)
+save=[]
+import time
+print(grid)
+time.sleep(.5)
+reset_count=0
+for i in range(0,100000):
+    runmodel()
+    #print("\n\n\n")
+    #if end sequance
+    if -1 not in grid:
+        if len(instances)>=3:#might need to be 2
+            rewords[-1]+=10-len(instances)#3*(1/(len(instances)-2.9))
+        else:
+            rewords[-1]+=15
+        print("yah",len(instances),i)
+        #print(grid)
+        rid=np.zeros((3,3))
+        AIx=0
+        AIy=0
+        Foodx=2
+        Foody=2
+        grid[AIx,AIy]=1
+        grid[Foodx,Foody]=-1
+        #print("reset")
+        for i in range(0,len(instances)):
+            #update
+            average_reword=0
+            for k in range(i,len(instances)):
+                average_reword += rewords[k]
+            average_reword /= len(instances)-i
+            loss=instances[i].finalcombination(average_reword)
+            #matrix math
+            alfa=np.e**(-(weight@instances[i].Input+bias))
+            
+            alfa=np.diag(loss)@np.diag((alfa/(1+alfa)**2))
+            
+            dz_dw=np.zeros((4,9))
+            dz_dw[:]=instances[i].Input
+            
+            #dz_dx=weight #for next layer
+            
+            weight_t+=alfa@dz_dw
+            bias_t+=np.sum(alfa,axis=0)
+            #to next layer+=np.sum(alfa@dz_dx, axis=0)
+            #add to togradiant
+        instances=[]
+        rewords=[]
+        proba=[]
+        reset_count+=1
+        if reset_count>=10000:
+            #aply
+            weight -=weight_t*.01
+            bias -= bias_t*.01
+            #clear
+            weight_t=np.zeros((4,9))
+            bias_t=np.zeros(4)
+
+    #print(grid)
+    #print(np.average(rewords))
+    save.append(len(rewords))
+    #time.sleep(.5)
+    
+import matplotlib.pyplot as plt
+plt.plot(save)
+

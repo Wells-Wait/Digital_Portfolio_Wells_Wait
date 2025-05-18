@@ -77,15 +77,18 @@
 
 /* bodey */
 
-section div{
+section  .outerbox{
     justify-self: center;
 
 display: table;
  border-color: black;
  border-style: groove;
  width: 90%;
+ margin: 1%;
+ 
 }
-section div *{
+
+section div .sidebyside .object{
 float: left;
 
  padding: 10px;
@@ -93,8 +96,14 @@ float: left;
  text-align: center;
  
 }
-section div object{
+section div .sidebyside object{
 
     width: 45%;
-    height: 1000px;
+    height: 500px;
+}
+section div h1{
+    text-align: center;
+}
+.red{
+    color:red;
 }
