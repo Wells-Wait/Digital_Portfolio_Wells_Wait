@@ -99,6 +99,7 @@
     font-weight: bold;
     font-size: x-large;
     text-decoration: underline;
+    padding: 1%;
 }
 .sidebyside{
 justify-self: center;
@@ -112,6 +113,7 @@ width: 96%;
 float: left;
  width: 48%;
  text-align: center;
+ padding: 1%;
 
  
 }
@@ -133,4 +135,7 @@ float: left;
    font-weight: bold;
     font-size: xx-large;
     text-decoration:wavy; 
+}
+.red{
+    color: red;
 }
