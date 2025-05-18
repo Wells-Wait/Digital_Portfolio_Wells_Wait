@@ -1,18 +1,20 @@
-* {
+*{
     padding: 0%;
     margin: 0;
     text-decoration: none;
-    color: black;
+    
+    
 }
-
 /* header */
 
 #TopHeader{
+    position: sticky;
     background-color: black;
     height: 80px;
-    position: sticky;
+    
     top: 0px;
     z-index: 1000;
+    
 }
 #TopHeader a h1,h2{
     color: white;
@@ -20,6 +22,62 @@
 #TopHeader a:hover *{
     color: rgb(180, 200, 255);
     
+}
+
+/* Nav bar */
+#navbar{
+    top: 80px;
+    z-index: 1000;
+    position: sticky;
+    width: 100%;
+    height: 15px;
+    background-color: black;
+    /* position: relative; */
+    transition: 0.3s;
+
+}
+#navbar * {
+        color: white;
+        
+}
+#navbar ul{
+    padding-left: 5%;
+    list-style-type: none;
+
+}
+#navbar ul li{
+    float: left;
+    background-color: black;
+
+    padding: 0px 1%;
+    font-size: 10pt;
+    height: 15px;
+    transition: 0.3s;
+}
+
+#navbar:hover{
+    height: 20px;
+    
+
+}
+#navbar:hover ul li{
+
+    background-color: black;
+
+    font-size: 13pt;
+    height: 20px;
+  
+}
+
+#navbar ul li:hover{
+
+    background-color: rgb(37, 40, 67);
+
+}
+#navbar ul #Project{
+    text-decoration: underline;
+
+
 }
 
 /* project list */
