@@ -75,6 +75,28 @@ targetElement.style.backgroundColor = `rgb( ${Math.round(100 * ratio)}, ${Math.r
 window.addEventListener('scroll', updateScrollProgress);
 window.addEventListener('resize', updateScrollProgress);
 
+function updateVideoProgress() {
+    const video = document.getElementById('fsaeVideo');
+    const targetElement = document.getElementById('fsaeVideo');
+    if (!targetElement || !video) return;
 
+    const rect = targetElement.getBoundingClientRect();
+    const elementHeight = targetElement.offsetHeight;
+    const windowHeight = window.innerHeight;
+
+    const scrollDistance = windowHeight - rect.top;
+    const totalScrollable = elementHeight + windowHeight;
+
+    let percentage = (scrollDistance / totalScrollable);
+    percentage = Math.max(0, Math.min(1, percentage)); // Keep ratio between 0 and 1
+
+    // If the video metadata is loaded, scrub the video time based on scroll
+    if (!isNaN(video.duration)) {
+        video.currentTime = video.duration * percentage;
+    }
+}
+
+window.addEventListener('scroll', updateVideoProgress);
+window.addEventListener('resize', updateVideoProgress);
 
 // Run immediately in case the DOM is already ready
