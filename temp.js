@@ -3,14 +3,14 @@ function resizeHeight() {
     const items = document.querySelectorAll('.fullHeight');
     
     items.forEach(item => {
-        item.style.height = screenHeight*.90 + 'px';
+        item.style.minHeight = screenHeight*.90 + 'px';
     });
 
  ;
     items2 = document.querySelectorAll('.halfHeight');
     
     items2.forEach(item2 => {
-        item2.style.height = (screenHeight*.40)+ 'px';
+        item2.style.minHeight = (screenHeight*.40)+ 'px';
     });
 }
 window.addEventListener('load', resizeHeight);
