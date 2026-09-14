@@ -1,13 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="stylesheet" href="index.css">
 </head>
+
 <body>
-    <header id="TopHeader"><a href="index.htm"><h1>Wells Wait</h1><h2>Digital Protfolio</h2></a></header>
+    <header id="TopHeader"><a href="index.htm">
+            <h1>Wells Wait</h1>
+            <h2>Digital Protfolio</h2>
+        </a></header>
 
     <header id="navbar">
         <ul>
@@ -17,63 +22,247 @@
             <li id="Project"><a href="ProjectList/ProjectList.htm">Project list</a></li>
         </ul>
     </header>
+    <section id="SectionOne" class="fullHeight">
 
+        <div class="outerbox halfHeight">
+            <h1>About Me</h1>
+            <img src="Assets/IMG_9883.jpg" alt="Photo of me">
+            <div>
+                <p>My name is Wells Wait, current student
+                    at Colorado School of Mines.
+                    I am working towards a mechanical engineering major
+                    and do a lot of programming in my free time.
+                </p>
+                <span class="lineSep"></span>
+                <p>
+                    I am interested in the interface between mechanical systems and the logic of software.
+                    In my free time, I do projects as well as some photography, like a profile photo! Below are a few
+                    projects I
+                    enjoyed working on or am still helping on.
+                </p>
 
+            </div>
+        </div>
+        <div class="halfHeight outerbox">
+            <h1>About this Site</h1>
 
-    <section class="outerbox">
-        <img src="Assets/IMG_9883.jpg" alt="Photo of me">
-        <div id="text1">
-            <h1>Welcome to my Digital Protfolio</h1>
-            <p>My name is Wells Wait, and I love to work on challenging problems. I have worked through my fair share of team projects inside and outside of school, and value wide skillsets and perspectives. 
-                I am dyslexic, so while there will be some bad spelling in this portfolio, it should give you a good idea of my interests and skills.
+            <p>As you may have noticed this websight is not vary pritty. This is mostly because I am not sure how to
+                make something like this look good.
+                but also because this websight was built from scratch with html. The js htm and cs files were done by
+                hand and I don't have endless
+                time. </p>
+            <span class="lineSep"></span>
+            <p>Right now a large update is under way to make this sight a bit more inteacive.
+                This is to help make it feel good with each device as well as engage with the vewier.
+                The spinning box is an example
+
             </p>
-            <p>---</p>
-   
-            <p>Of course, time is often limited, so a brief description of skills and interests is warranted.
-                 I have done a lot of work in designing solutions using a wide variety of tools, from CAD to programming.
-                  I am an avid supporter of education and mathematics, and while I am not much of a teacher, I will always try.
-                   My preference in the design process is software that works with a physical system, so generally robotics.
-                 In addition to these, I generally spend my free time doing research into AI, focusing on the development of new algorithms.</p>
-        </div>
-        
-        
-    </section>
-    <section class="outerbox">
-        <h1 class="center">Updates To Expect Soon</h1>
-        <div class="sidebyside">
-            <div class="sidebysideobject">
-            <h1>Currnetly in Progress or Recently Finished</h1>
-                <ul class="centerList">
-                    <li>Formula SAE</li>
-                    <li>Emotion-Inspired Spiking Neural Network using Temporary Dynamic Routing of Pathways and Synaptic Strengths During Inference with Heterogeneous Outputs</li>
-                    <li>Reinforment learning with simple enviorment</li>
-                    <li>Camper</li>
-                    <li><a href="ProjectList/D2025/Drone/Drone.htm">Drone Flight contraler</a></li>
-                    <li><a href="https://alexlarson090.wixsite.com/my-site-2">Desinging story shelving automation system</a></li>
-                    <li>Cribage board</li>
-                    <li>Battle Bot - (for fun)</li>
-                </ul>
+            <span class="lineSep"></span>
+            <div id="SectionOneRotateingRecFrame">
+                <div id="SectionOneRotateingRec"></div>
             </div>
-            <div class="sidebysideobject">
-            <h1>Potential Projects For Future</h1>
-                <ul class="centerList">
-                    <li>Music Creation with Music Theory and Reinforment Learning</li>
-                    <li>face recongnition based callender</li>
-                    
-                </ul>
-            </div>
-        </div>
-        
-    </section>
-    
-    
-</body>
-</html>
 
-<!-- List of things needing doing
- 1. Thesis-partial done 
- 2. Nasa Student Launch - partial done
- 3. Drone
- 4. robot shelfver
- 5. battle bot
- 6. update past years-->
+
+        </div>
+
+
+
+
+    </section>
+
+    <section id="SectionTwo" class="outerbox">
+        <div class="fullHeight halfFSAE">
+            <div id="SectionTwoColorChangeBox">
+                <h1>FSAE</h1>
+
+                <div>
+                    <p>Formula Society of Automotive Engineers (FSAE) is a club on campus that builds a car and
+                        competes.
+                        I joined freshman year on the software subsystem to ensure my engineering skills stay diverse.
+                        After all, I am interested in the connection of software and mechanical systems and what is a
+                        better example than a car.
+                        Well, that might be an EV car.
+                    </p>
+                    <span class="lineSep"></span>
+                    <p>
+                        This is my second year in the club and the first year they will be building an EV car in
+                        addition
+                        to the IC car.
+                        And most of my projects this year are on this brand new style of car. The below three sections
+                        go over the Screen, Vehicle Control Unit (VCU), and Battery Management System (BMS).
+                    </p>
+                </div>
+
+            </div>
+            <div>
+                <h1>Screen</h1>
+                <span class="lineSepL"></span>
+
+                <div class="screen-container">
+                    <div class="screen-text-content">
+
+                        <div>
+                            <p>
+                                The screen is the main interface for both the IC and EV car displaying the state of both
+                                cars.
+                                The screen system comprises two sections: rev-lights and of course a screen. The
+                                rev-lights
+                                are
+                                the most important part for the drivers as they are fast to read and indicate shifting,
+                                warnings, and on
+                                the EV, derate.
+                                There is one screen per driver as well as screens for diagnostics so each subsystem has
+                                the
+                                information they need during testing.
+                            </p>
+                            <span class="lineSep"></span>
+                            <p>
+                                The screen runs on a Pi using Qt to handle the graphics. The screen gets car data
+                                through
+                                shared
+                                memory Protobuf packets.
+                                The shared memory was developed by me to help connect the screen, VCU, and the rest of
+                                the
+                                systems on the Pi.
+                                The screen collects the data in C++, checks warnings, and displays everything to the
+                                driver.
+                            </p>
+                        </div>
+                    </div>
+
+                    <video id="fsaeVideo" muted playsinline>
+                        <source src="Assets/0001-0150.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+
+        </div>
+        <div class="fullHeight halfFSAE">
+            <div>
+
+                <h1>Battery Monitoring System</h1>
+                <span class="lineSepL"></span>
+
+                <div>
+                    <p>
+                        The Battery Monitoring System (BMS) is built to watch the battery on the new EV car and ensure
+                        safety.
+                        Its primary goal is ensuring the battery does not overheat, but it sends data over CAN to other
+                        systems.
+                        This data is used to ensure the car never reaches a point where the BMS must trigger a shutdown.
+                        In addition to safety, the BMS also does cell balancing. For this year's BMS, the cell balancing
+                        is only done through discharge.
+                        This means it is only really used during charging.
+                    </p>
+                    <span class="lineSep"></span>
+                    <p>
+                        The battery is broken into 5 modules, each with 24 groups, with each group having 4 cells. The
+                        BMS measures the voltage of all 120 groups
+                        and ensures that their voltages are all good. In addition, the BMS measures 100 temperatures
+                        across the battery to ensure safety of each module.
+                        The battery has a master and 10 slave boards with communication done through daisy chain ISO-SPI
+                        to ensure safety and quality signals.
+                        These signals are then checked for safety, and two packets are sent over CAN to the rest of the
+                        car. One is high-speed safety and warning data
+                        while the second is a low-speed multiplexed packet for later analysis of all 225 battery data
+                        points as well as current and a few more things.
+
+                    </p>
+                </div>
+
+            </div>
+
+
+
+            <div>
+
+                <h1>Vehicle Control System</h1>
+                <span class="lineSepL"></span>
+
+
+                <div>
+                    <p>
+                        The Vehicle Control System (VCU) controls the EV car, much like the name indicates. While it
+                        sounds cool, its primary goal
+                        like most systems is safety. It takes in data from around the car and if safety is compromised,
+                        shuts down the EV car. Unlike something like
+                        the BMS, however, the VCU also works to avoid shutdowns through power derate. If the car is
+                        indicating minor issues, it will decrease
+                        the torque to the motor to lower thermal or other issues. The VCU, like the screen, is run on
+                        the Pi of the EV and also uses shared memory Protobuf for communication.
+                        The VCU is safety-focused, but it is a control system and handles the inverter control, cooling,
+                        and providing some data to the driver through a link with the screen.
+                    </p>
+                    <span class="lineSep"></span>
+                    <p>
+                        This is the first year with an EV car, so this, like the BMS, is an entirely new system. This
+                        means it is basic this year,
+                        but in the future, the VCU will be handling slip, multi-motor control, and more. Right now it is
+                        critical and has many features, but
+                        the primary challenge is getting an EV car running with little experience.
+
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <section id="SectionThree" class="fullHeight">
+
+        <div class="outerbox halfHeight">
+            <h1>Skills</h1>
+            <div>
+                <h3>From FSAE</h3>
+                <ul>
+                    <li>Teamwork</li>
+                    <li>Interfaces - Between majors, Between systems, and Between people</li>
+                    <li>Leadership - I work with many people and am actively leading oncoming freshmen on several
+                        projects</li>
+                    <li>Communication Protocols - CAN, SPI, ISO-SPI, I2C, Protobuf, and more</li>
+                </ul>
+            </div>
+            <div>
+                <h3>From life and other</h3>
+                <ul>
+                    <li>Design for Manufacturing & use - Additive manufacturing, Hardware availability, Clear operation
+                        &
+                        cost</li>
+
+                    <li>Problem structuring - Ensure the goal is clear and make doable steps</li>
+                    <li>CAD - Because it is always needed</li>
+                </ul>
+            </div>
+        </div>
+        <div class="outerbox halfHeight">
+            <h1>Outside of Engineering & Software</h1>
+            <div class="screen-container">
+                <div class="screen-text-content">
+                    <div>
+                        <h3>Art & Creativity</h3>
+                        <ul>
+                            <li>Photography</li>
+                            <li>Calligraphy</li>
+                            <li>Drawing</li>
+                        </ul>
+
+                    </div>
+
+                    <div>
+                        <h3>Activities</h3>
+                        <ul>
+                            <li>Hiking</li>
+                            <li>Travel</li>
+
+                        </ul>
+                    </div>
+                </div>
+                <img src="Assets/blkawhite flower.jpg" alt="Photo of flower">
+                <img src="Assets/tiger_haren.jpg" alt="Photo of tiger haren">
+                </div>
+            </div>
+    </section>
+    <script src="index.js"></script>
+</body>
+
+</html>

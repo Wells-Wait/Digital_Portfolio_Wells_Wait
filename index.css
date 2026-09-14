@@ -1,9 +1,9 @@
 *{
+    color: aliceblue;
+    
     padding: 0%;
     margin: 0;
     text-decoration: none;
-    
-    
 }
 /* header */
 
@@ -80,26 +80,15 @@
 
 }
 /* body */
+body{
+background: linear-gradient(
+    145deg,
+    rgb(4, 0, 34) 0%,
+    
+    rgb(7, 61, 34) 100%
+);
 
-section img{
-float: left;   
- width: 35%;
- border-radius: 50px;
- border-color: black;
- border-style: groove;
- 
 }
-section #text1{
-    text-align: center;
-}
-section #text1 h1{
-    font-size: xx-large;
-}
-section #text1 p{
-    font-size: x-large;
-}
-
-/* second box */
 .outerbox{
     border-radius: 50px;
  border-color: black;
@@ -109,29 +98,195 @@ section #text1 p{
     padding: 5px;
     width: 90%;
     justify-self: center;
+    
+    font-size: x-large;
+    background-color: rgb(65, 62, 69);
+    border-radius: 50px;
+    border-color: black;
+    padding: 10px;
 
  
 }
-.sidebyside{
-justify-self: center;
-
-display: table;
-
-width: 96%;
+.lineSep{
+ 
+    display: block;      
+    width: 80%;        
+    height: 2px;         
+    background-color: rgb(114, 93, 93); 
+    margin: 20px 0; 
+    margin: 20px auto;     
+  }
+  .lineSepL{
+ 
+    display: block;      
+    width: 95%;        
+    height: 3px;         
+    background-color: rgb(59, 52, 52); 
+    margin: 20px 0; 
+    margin: 20px auto;
+    border-style: ridge;     
+  }
+/* section one */
+#SectionOne img{
+float: left;   
+ width: 35%;
+ border-radius: 50px;
+ border-color: black;
+ border-style: groove;
+ margin-right: 40px;
  
 }
-.sidebysideobject{
-float: left;
- width: 48%;
- text-align: center;
- padding: 1%;
 
- 
+
+#SectionOne{
+    
+    font-size: x-large;
+    border-radius: 50px;
+    border-color: black;
+    padding: 10px;
 }
-.center{
-    text-align: center;
+
+      #SectionOneRotateingRecFrame {
+        
+        width: 100%;
+        height: 100px;
+        transform-origin: center center;
+        border-radius: 50px;
+        
+        /* 1. Added borders so they actually display */
+        border: 2px solid rgb(104, 100, 100); 
+    
+        /* 2. Added Flexbox to perfectly center the child element */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    #SectionOneRotateingRec {
+        font-size: x-large;
+        background-color: rgb(22, 5, 214);
+    
+        width: 50px;
+        height: 50px;
+        
+        /* 3. Added matching border style if you want it here too */
+        border: 2px solid black; 
+    }
+    
+
+/* section Two */
+
+
+
+#SectionTwo {
+    font-size: x-large;
+    border-radius: 50px;
+    border-color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
-.centerList{
-    display: inline-block;
-    text-align: left;
+
+
+
+
+#SectionTwo video {
+    width: 90%;
+    border-radius: 10px;
+
+    flex-shrink: 0;
+    background-color: black;
+    border-radius: 10px;
+}
+
+
+#SectionTwo .screen-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    
+}
+
+@media (min-width: 1200px) {
+     #SectionTwo .screen-container {
+        flex-direction: row;
+        align-items: center;
+        gap: 2rem;
+    }
+     #SectionTwo.screen-text-content {
+        flex: 1;
+    }
+    #SectionTwo video {
+    width: 50%;
+    flex-shrink: 0;
+}
+
+}
+
+#SectionTwoColorChangeBox{
+    border-color: black;
+    border-width: 5px;
+    border-radius: 50px;
+    padding: 20px;
+    
+    
+    
+    
+}
+.halfFSAE div{
+   height: 50%;
+}
+
+/* section three */
+#SectionThree ul {
+    padding: 10px;
+    flex-shrink: 0;
+    
+    
+}
+#SectionThree ol {
+    padding: 10px;
+    flex-shrink: 0;
+    
+}
+#SectionThree li {
+    padding: 5px;
+    flex-shrink: 0;
+    font-size: large;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+#SectionThree img {
+    width: 80%;
+    max-width: 400px;
+    border-radius: 50px;
+    border: 3px groove black;
+    margin: 0 auto;
+    display: block;
+}
+
+#SectionThree .screen-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+@media (min-width: 900px) {
+    #SectionThree .screen-container {
+        flex-direction: row; 
+        align-items: center;
+        justify-content: flex-end; 
+        gap: 3rem; 
+    }
+    
+    #SectionThree .screen-text-content {
+        flex: 1;
+    }
+    
+    #SectionThree img {
+        width: 30%; 
+        max-width: none;
+        margin: 0;
+        flex-shrink: 0;
+    }
 }
