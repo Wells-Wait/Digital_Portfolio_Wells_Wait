@@ -9,7 +9,10 @@
 </head>
 
 <body>
-        <header id="TopHeader"><a href="index.htm"><h1>Wells Wait</h1><h2>Digital Protfolio</h2></a></header>
+    <header id="TopHeader"><a href="index.htm">
+            <h1>Wells Wait</h1>
+            <h2>Digital Protfolio</h2>
+        </a></header>
 
     <header id="navbar">
         <ul>
@@ -19,9 +22,9 @@
             <li id="Project"><a href="ProjectList/ProjectList.htm">Project list</a></li>
         </ul>
     </header>
-    <section id="SectionOne">
+    <section id="SectionOne" class="fullHeight">
 
-        <div class="outerbox fullHeight">
+        <div class="outerbox halfHeight">
             <h1>About Me</h1>
             <img src="Assets/IMG_9883.jpg" alt="Photo of me">
             <div>
@@ -30,22 +33,46 @@
                     I am working towards a mechanical engineering major
                     and do a lot of programming in my free time.
                 </p>
+                <span></span>
                 <p>
                     I am interested in the interface between mechanical systems and the logic of software.
                     In my free time, I do projects as well as some photography, like a profile photo! Below are a few
                     projects I
                     enjoyed working on or am still helping on.
                 </p>
-                <div id="progress-indicator">0%</div>
+
             </div>
+        </div>
+        <div class="halfHeight outerbox">
+            <h1>About this sight</h1>
+            
+            <p>As you may have noticed this websight is not vary pritty. This is mostly because I am not sure how to
+                make something like this look good.
+                but also because this websight was built from scratch with html. The js htm and cs files were done by
+                hand and I don't have endless
+                time. </p>
+                <span></span>
+                <p>Right now a large update is under way to make this sight a bit more inteacive. 
+                    This is to help make it feel good with each device as well as engage with the vewier.
+
+                </p>
+                <span></span>
+                <div id="SectionOneRotateingRecFrame">
+                    <div id="SectionOneRotateingRec"></div>
+                </div>
+                
+                
         </div>
         
 
+
+
     </section>
+    
     <section id="SectionTwo">
         <div id="SectionTwoColorChangeBox" class="outerbox fullHeight">
             <h1>About Me</h1>
-            
+
             <div>
                 <p>My name is Wells Wait, current student
                     at Colorado School of Mines.
@@ -60,7 +87,7 @@
                 </p>
             </div>
         </div>
-        </section>
+    </section>
     <script src="temp.js"></script>
 </body>
 
